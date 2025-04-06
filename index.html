@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saúde e Bem-Estar - Experiência Máxima</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS para animações -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <style>
+    /* CSS Variables para cores e fontes */
+    :root {
+      --primary-color: #4CAF50;
+      --secondary-color: #2e7d32;
+      --accent-color: #c5e1a5;
+      --background-color: #e9f5ee;
+      --text-color: #333;
+      --white: #fff;
+      --font-family: 'Roboto', sans-serif;
+    }
+    
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Estilos gerais */
+    body {
+      font-family: var(--font-family);
+      background: var(--background-color);
+      color: var(--text-color);
+      scroll-behavior: smooth;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--primary-color);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--white);
+      font-size: 1.5rem;
+      transition: opacity 0.5s ease;
+    }
+    #preloader .spinner {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid var(--white);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Header com efeito parallax e overlay */
+    header {
+      background: url('https://source.unsplash.com/1600x900/?health,wellness') no-repeat center center/cover;
+      position: relative;
+      height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: var(--white);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    .header-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInDown 1.2s ease-out;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    header p {
+      font-size: 1.5rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    /* Navegação */
+    nav {
+      background: rgba(46,125,50,0.95);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--white);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-links a {
+      color: var(--white);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--accent-color); }
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: var(--white);
+      cursor: pointer;
+    }
+    
+    /* Seções */
+    section {
+      padding: 3rem 1rem;
+      margin: 2rem auto;
+      max-width: 1100px;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    section h2 {
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+    }
+    section p, section li { font-size: 1.1rem; margin-bottom: 1rem; }
+    ul li {
+      margin-left: 1rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+    ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+    }
+    blockquote {
+      font-style: italic;
+      background: #f1f8e9;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 5px solid var(--primary-color);
+      font-size: 1.1rem;
+    }
+    
+    /* Formulário de Contato com validação */
+    #contato form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    #contato label { font-weight: bold; }
+    #contato input, #contato textarea {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+    #contato input:focus, #contato textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+    #contato button {
+      background: var(--primary-color);
+      color: var(--white);
+      border: none;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    #contato button:hover { background: #388e3c; transform: scale(1.02); }
+    .error {
+      border-color: #e74c3c !important;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--secondary-color);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 1rem;
+    }
+    footer .social-icons {
+      margin-top: 1rem;
+    }
+    footer .social-icons a {
+      margin: 0 0.5rem;
+      color: var(--white);
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+    footer .social-icons a:hover {
+      color: var(--accent-color);
+    }
+    
+    /* Botão Voltar ao Topo */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 0.8rem;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: background 0.3s, transform 0.3s;
+      z-index: 1000;
+    }
+    #back-to-top:hover { background: #388e3c; transform: scale(1.1); }
+    
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+      }
+      nav.active .nav-links { display: flex; margin-top: 1rem; }
+      .menu-toggle { display: block; }
+      header h1 { font-size: 2.5rem; }
+      header p { font-size: 1.2rem; }
+      section { margin: 1rem; padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+    <div>Carregando...</div>
+  </div>
+
+  <!-- Cabeçalho com efeito parallax -->
+  <header id="inicio">
+    <div class="header-content" data-aos="fade-down">
+      <h1>Saúde e Bem-Estar</h1>
+      <p>Cuide do seu corpo, mente e espírito</p>
+    </div>
+  </header>
+  
+  <!-- Navegação -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">Bem-Estar</div>
+      <span class="menu-toggle"><i class="fas fa-bars"></i></span>
+      <div class="nav-links">
+        <a href="#inicio">Início</a>
+        <a href="#alimentacao">Alimentação</a>
+        <a href="#exercicios">Exercícios</a>
+        <a href="#saude-mental">Mente</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#contato">Contato</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Seções com AOS -->
+  <section id="introducao" data-aos="fade-up">
+    <h2>Introdução</h2>
+    <p>Bem-vindo ao nosso espaço dedicado à saúde e bem-estar! Descubra dicas e práticas para transformar seu dia a dia e cuidar do seu corpo e mente de forma integrada e inspiradora.</p>
+  </section>
+  
+  <section id="alimentacao" data-aos="fade-up">
+    <h2>Alimentação Saudável</h2>
+    <p>Receitas e dicas para uma alimentação equilibrada e cheia de sabor:</p>
+    <ul>
+      <li>Salada de grão de bico com legumes frescos</li>
+      <li>Vitamina de frutas com aveia</li>
+      <li>Prefira alimentos naturais e evite ultraprocessados</li>
+    </ul>
+  </section>
+  
+  <section id="exercicios" data-aos="fade-up">
+    <h2>Exercícios Físicos</h2>
+    <p>Rotinas simples e eficazes para manter seu corpo ativo e saudável:</p>
+    <ul>
+      <li>Alongamento matinal para despertar os músculos</li>
+      <li>Caminhada ou corrida leve para aumentar a disposição</li>
+      <li>Treinos funcionais três vezes por semana</li>
+    </ul>
+  </section>
+  
+  <section id="saude-mental" data-aos="fade-up">
+    <h2>Saúde Mental</h2>
+    <p>Cuide do seu equilíbrio emocional com práticas que promovem relaxamento e foco:</p>
+    <ul>
+      <li>Exercícios de respiração consciente</li>
+      <li>Meditação diária para acalmar a mente</li>
+      <li>Reserve momentos para relaxar e se reconectar</li>
+    </ul>
+  </section>
+  
+  <section id="depoimentos" data-aos="fade-up">
+    <h2>Depoimentos</h2>
+    <blockquote>
+      "Desde que comecei a seguir as dicas deste site, minha vida mudou para melhor!" – Ana C.
+    </blockquote>
+    <blockquote>
+      "As receitas e os treinos são simples e eficazes. Sinto-me mais saudável e motivado!" – João M.
+    </blockquote>
+  </section>
+  
+  <section id="contato" data-aos="fade-up">
+    <h2>Contato</h2>
+    <p>Tem dúvidas, sugestões ou deseja compartilhar sua experiência? Preencha o formulário abaixo:</p>
+    <form id="contact-form" action="mailto:semnome14062008@gmail.com" method="POST" enctype="text/plain">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+      <span id="error-nome" class="error-message"></span>
+  
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Seu email" required>
+      <span id="error-email" class="error-message"></span>
+  
+      <label for="mensagem">Mensagem:</label>
+      <textarea id="mensagem" name="mensagem" rows="6" placeholder="Escreva sua mensagem aqui..." required></textarea>
+      <span id="error-mensagem" class="error-message"></span>
+  
+      <button type="submit">Enviar Mensagem</button>
+    </form>
+  </section>
+  
+  <!-- Botão Voltar ao Topo -->
+  <button id="back-to-top"><i class="fas fa-chevron-up"></i></button>
+  
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 Saúde e Bem-Estar. Todos os direitos reservados.</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </footer>
+  
+  <!-- Scripts: AOS, Menu Mobile, Preloader, Botão Topo e Validação do Formulário -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Inicializa o AOS
+    AOS.init({ duration: 1000, once: true });
+    
+    // Preloader: Oculta após o carregamento completo
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('preloader');
+      preloader.style.opacity = '0';
+      setTimeout(() => preloader.style.display = 'none', 500);
+    });
+    
+    // Menu Mobile
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      if (navLinks.classList.contains('active')) {
+        navLinks.style.display = 'flex';
+      } else {
+        navLinks.style.display = 'none';
+      }
+    });
+    
+    // Botão Voltar ao Topo
+    const backToTopButton = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      backToTopButton.style.display = (window.pageYOffset > 300) ? 'block' : 'none';
+    });
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Validação Simples do Formulário
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', (e) => {
+      let valid = true;
+      // Limpa mensagens de erro
+      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+      // Validação Nome
+      const nome = document.getElementById('nome');
+      if (nome.value.trim() === '') {
+        valid = false;
+        nome.classList.add('error');
+        document.getElementById('error-nome').textContent = 'Por favor, informe seu nome.';
+      } else {
+        nome.classList.remove('error');
+      }
+      // Validação Email
+      const email = document.getElementById('email');
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if (!emailRegex.test(email.value.trim())) {
+        valid = false;
+        email.classList.add('error');
+        document.getElementById('error-email').textContent = 'Por favor, informe um email válido.';
+      } else {
+        email.classList.remove('error');
+      }
+      // Validação Mensagem
+      const mensagem = document.getElementById('mensagem');
+      if (mensagem.value.trim() === '') {
+        valid = false;
+        mensagem.classList.add('error');
+        document.getElementById('error-mensagem').textContent = 'Por favor, digite sua mensagem.';
+      } else {
+        mensagem.classList.remove('error');
+      }
+      if (!valid) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
